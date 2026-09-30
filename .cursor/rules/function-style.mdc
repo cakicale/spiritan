@@ -1,0 +1,19 @@
+---
+description: Function style — guard clauses, options objects, consistent null guards
+alwaysApply: true
+---
+
+# Function & Code Style
+
+Follow `docs/agent/function-style.md` for full examples.
+
+## Rules (summary)
+
+1. Return early — edge cases first
+2. No nesting — sequential early returns, no `else if`
+3. Extract complex logic into named functions
+4. `const` only — never `let`
+5. Options object for 2+ parameters
+6. Consistent null guards per function
+7. Extract compound conditions to named `const`
+8. In React/JSX: prefer early returns for loading/error/empty states

@@ -1,0 +1,31 @@
+---
+description: Spiritan project — tech stack, code rules, and agent workflows
+alwaysApply: true
+---
+
+# Spiritan
+
+## Tech Stack
+
+pnpm | Next.js 16 | React 19 | Tailwind CSS v4 | TypeScript.
+
+## Code Rules
+
+**Mandatory. Apply to every file touched.**
+
+- **Guard clauses** — early returns over nested `if/else`. See `.cursor/rules/function-style.mdc` or `docs/agent/function-style.md`.
+- **Karpathy guidelines** — think first, simplicity, surgical changes. See `.cursor/rules/karpathy-guidelines.mdc`.
+- **Edge cases** — risky code (API routes, auth, multi-step flows) → walk 7 categories. See `docs/agent/edge-cases.md`.
+- **Design tokens** — one token per colour value; no arbitrary `[#hex]` in components. See `.cursor/rules/design-tokens.mdc` or `docs/agent/design-tokens.md`.
+- **No secrets** — do not commit `.env.local` or expose private API keys to the browser.
+
+## Git/GitHub Workflow
+
+See `CONTRIBUTING.md`. Agent workflows:
+
+- `docs/agent/create-pr.md` — structured PR body, `gh pr create` against `main`
+- `docs/agent/pr-preview.md` — branch diff vs project conventions; GitHub review comments in **English only**
+
+## Skills (on-demand)
+
+- `docs/agent/edge-cases.md` — edge-case taxonomy

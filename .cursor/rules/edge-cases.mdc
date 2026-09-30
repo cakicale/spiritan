@@ -1,0 +1,10 @@
+---
+description: Edge-case discipline — 7 categories and 7-step workflow
+alwaysApply: false
+---
+
+# Edge-case Discipline
+
+Follow `docs/agent/edge-cases.md` for the full taxonomy and workflow.
+
+Keep in sync with `.claude/skills/edge-cases.md`.
