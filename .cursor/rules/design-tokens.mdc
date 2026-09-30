@@ -1,0 +1,8 @@
+---
+description: Design tokens — one token per colour value, no duplicates, no hardcoded hex
+alwaysApply: true
+---
+
+# Design tokens
+
+Follow `docs/agent/design-tokens.md`.

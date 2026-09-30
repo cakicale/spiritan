@@ -1,0 +1,10 @@
+---
+description: Karpathy guidelines — think first, simplicity, surgical changes
+alwaysApply: true
+---
+
+# Karpathy Guidelines
+
+Follow `docs/agent/karpathy-guidelines.md` for full detail.
+
+Keep in sync with `.claude/rules/karpathy-guidelines.md`.
