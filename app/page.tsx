@@ -1,54 +1,23 @@
-export default function Home() {
+import Image from "next/image";
+import { GameCatalogue } from "@/components/game-catalogue";
+import { Icon } from "@/components/icon";
+import { getProducts } from "@/lib/products";
+
+export default async function Home() {
+  const games = await getProducts();
   return (
-    <main className="min-h-screen bg-[#090b10] text-white">
-      <section className="mx-auto flex min-h-screen max-w-6xl flex-col justify-between px-6 py-8 md:px-10 md:py-10">
-        <nav className="flex items-center justify-between">
-          <div className="text-2xl font-bold tracking-tight">SPIRITAN</div>
+    <>
+      <main id="main">
+        <section className="hero container" aria-labelledby="hero-title">
+          <div className="hero-art"><Image src="/games/cyberpunk-hero.jpg" alt="Cyberpunk 2077's V against the Night City skyline" fill sizes="(max-width: 1280px) 100vw, 1280px" preload /></div><div className="hero-shade" />
+          <div className="hero-copy"><p className="eyebrow">FOR THE LOVE OF PLAY</p><h1 id="hero-title">Your next<br />adventure<br /><span>starts here.</span></h1><p className="hero-description">Big worlds. Small discoveries. Games you&apos;ll keep coming back to.</p><a className="button button-primary" href="#games">Find your next game</a><p className="hero-note"><Icon name="monitor" />Digital games. Built for players.</p></div>
+          <div className="hero-spotlight"><span className="spotlight-label">IN THE SPOTLIGHT</span><strong>Cyberpunk 2077</strong><span>PC · PS5 · Xbox / Open world</span></div><span className="hero-edition">THE SPIRITAN EDIT / 001</span>
+        </section>
+        <div className="container value-strip"><div><Icon name="controller" /><span>Great games, one place</span></div><div><Icon name="download" /><span>A fully digital experience</span></div><div><Icon name="globe" /><span>Serbia first. Balkans next.</span></div></div>
+        <GameCatalogue games={games} />
+        <section className="container about-section" id="about" aria-labelledby="about-title"><div><p className="eyebrow">A NEW PLAYER IN THE BALKANS</p><h2 id="about-title">Made by a gamer.<br /><span>For gamers.</span></h2></div><div className="about-copy"><p>That one more level. A world you get lost in. The game you still talk about years later. That&apos;s why we&apos;re building Spiritan.</p><p>We&apos;re working towards an independent digital games store for Serbia and the wider Balkans, with a focus on officially sourced products. This is our first chapter.</p><a className="text-link" href="mailto:aleksandar.popovic311@gmail.com">Let&apos;s talk <Icon name="mail" /></a></div></section>
+      </main>
 
-          <span className="rounded-full border border-white/15 px-4 py-2 text-sm text-white/60">
-            Pre-launch
-          </span>
-        </nav>
-
-        <div className="max-w-4xl py-20">
-          <p className="mb-5 text-sm font-medium uppercase tracking-[0.2em] text-white/50">
-            Digital Games Retail
-          </p>
-
-          <h1 className="max-w-4xl text-5xl font-semibold tracking-tight md:text-7xl">
-            Games you want.
-            <br />
-            Delivered digitally.
-          </h1>
-
-          <p className="mt-8 max-w-2xl text-lg leading-8 text-white/60 md:text-xl">
-            Spiritan is an upcoming digital games retailer focused on officially
-            sourced digital products for players in Serbia and the wider Balkan
-            region.
-          </p>
-
-          <div className="mt-10 flex flex-wrap gap-3">
-            {["PlayStation", "Xbox", "Nintendo", "PC"].map((platform) => (
-              <span
-                key={platform}
-                className="rounded-lg border border-white/10 bg-white/5 px-5 py-3 text-sm text-white/80"
-              >
-                {platform}
-              </span>
-            ))}
-          </div>
-        </div>
-
-        <footer className="flex flex-col gap-2 border-t border-white/10 pt-6 text-sm text-white/40 md:flex-row md:items-center md:justify-between">
-          <span>© 2026 Spiritan</span>
-          <a
-            href="mailto:aleksandar.popovic311@gmail.com"
-            className="transition hover:text-white"
-          >
-            aleksandar.popovic311@gmail.com
-          </a>
-        </footer>
-      </section>
-    </main>
+    </>
   );
 }
