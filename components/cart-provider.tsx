@@ -27,7 +27,7 @@ export function CartProvider({ products, children }: { products: Game[]; childre
   const orderSnapshot = useSyncExternalStore(orderStore.subscribe, orderStore.read, orderStore.serverSnapshot);
   const ready = useSyncExternalStore(subscribeHydration, clientHydration, serverHydration);
   const items = resolveCart(snapshot, products);
-  const order = parseDemoOrder(orderSnapshot);
+  const order = parseDemoOrder({ snapshot: orderSnapshot, products });
 
   function addItem(id: string) {
     const game = products.find((item) => item.id === id);
@@ -52,7 +52,7 @@ export function CartProvider({ products, children }: { products: Game[]; childre
       items: current,
       totalCents: cartTotalCents(current),
     };
-    orderStore.write(JSON.stringify(receipt));
+    orderStore.write(JSON.stringify({ id: receipt.id, email: receipt.email, createdAt: receipt.createdAt, itemIds: current.map((item) => item.id) }));
     cartStore.write("[]");
     return receipt;
   }

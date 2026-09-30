@@ -1,5 +1,4 @@
 import type { Game } from "./mock-games";
-import { platforms } from "./platforms";
 
 export const CART_KEY = "spiritan:cart:v1";
 export const ORDER_KEY = "spiritan:demo-order:v1";
@@ -34,17 +33,47 @@ export function cartTotalCents(items: CartGame[]) {
   return items.reduce((total, game) => total + Math.round(game.price * 100), 0);
 }
 
-export function parseDemoOrder(snapshot: string): DemoOrder | null {
+function readStoredIds(order: Record<string, unknown>) {
+  if (Array.isArray(order.itemIds)) return stringsOnly(order.itemIds);
+  if (!Array.isArray(order.items) || order.items.length === 0) return null;
+  const ids = order.items.flatMap((item) => {
+    if (!item || typeof item !== "object") return [];
+    const id = (item as Record<string, unknown>).id;
+    return typeof id === "string" ? [id] : [];
+  });
+  return ids.length === order.items.length ? ids : null;
+}
+
+function stringsOnly(values: unknown[]) {
+  const ids = values.filter((id): id is string => typeof id === "string" && id.length > 0);
+  if (ids.length !== values.length || ids.length === 0) return null;
+  return ids;
+}
+
+function resolveOrderItems({ ids, products }: { ids: string[]; products: Game[] }) {
+  const uniqueIds = [...new Set(ids)];
+  const items = uniqueIds.flatMap((id) => {
+    const game = products.find((item) => item.id === id);
+    return game && canAddToCart(game) ? [game] : [];
+  });
+  if (items.length !== uniqueIds.length) return null;
+  return items;
+}
+
+// Receipt titles and prices come from the catalogue, not from stored JSON.
+export function parseDemoOrder({ snapshot, products }: { snapshot: string; products: Game[] }): DemoOrder | null {
   try {
-    const order = JSON.parse(snapshot);
-    if (!order || typeof order !== "object" || typeof order.id !== "string" || !order.id.startsWith("DEMO-") || typeof order.email !== "string" || typeof order.createdAt !== "string" || !Number.isFinite(Date.parse(order.createdAt)) || !Array.isArray(order.items) || !order.items.length) return null;
-    const validItems = order.items.every((item: unknown) => {
-      if (!item || typeof item !== "object") return false;
-      const game = item as Record<string, unknown>;
-      return ["id", "gameId", "slug", "title", "image"].every((key) => typeof game[key] === "string") && typeof game.platform === "string" && platforms.some((platform) => platform === game.platform) && game.currency === "EUR" && typeof game.price === "number" && Number.isFinite(game.price) && game.price >= 0;
-    });
-    if (!validItems) return null;
-    return { ...order, totalCents: cartTotalCents(order.items) };
+    const order: unknown = JSON.parse(snapshot);
+    if (!order || typeof order !== "object") return null;
+    const record = order as Record<string, unknown>;
+    if (typeof record.id !== "string" || !record.id.startsWith("DEMO-")) return null;
+    if (typeof record.email !== "string" || record.email.length === 0 || record.email.length > 254) return null;
+    if (typeof record.createdAt !== "string" || !Number.isFinite(Date.parse(record.createdAt))) return null;
+    const ids = readStoredIds(record);
+    if (!ids) return null;
+    const items = resolveOrderItems({ ids, products });
+    if (!items) return null;
+    return { id: record.id, email: record.email, createdAt: record.createdAt, items, totalCents: cartTotalCents(items) };
   } catch {
     return null;
   }
