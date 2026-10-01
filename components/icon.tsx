@@ -1,6 +1,10 @@
 import type { ReactNode, SVGProps } from "react";
-type IconName = "controller" | "monitor" | "download" | "globe" | "search" | "close" | "mail" | "cart" | "check" | "trash";
+type IconName = "controller" | "monitor" | "download" | "globe" | "search" | "close" | "mail" | "cart" | "check" | "trash" | "arrow-right" | "arrow-left" | "chevron-down" | "sparkles";
 const paths: Record<IconName, ReactNode> = {
+  "arrow-right": <path d="M4 12h16m-6-6 6 6-6 6" />,
+  "arrow-left": <path d="M20 12H4m6-6-6 6 6 6" />,
+  "chevron-down": <path d="m6 9 6 6 6-6" />,
+  sparkles: <><path d="m12 3 2.5 6.5L21 12l-6.5 2.5L12 21l-2.5-6.5L3 12l6.5-2.5L12 3ZM20 2v4m-2-2h4" /></>,
   cart: <><path d="M2 3h3l2.5 13H19l3-9H6" /><circle cx="9" cy="21" r="1" /><circle cx="18" cy="21" r="1" /></>,
   check: <path d="m5 12 4 4L19 6" />,
   trash: <><path d="M3 6h18M9 6V3h6v3M5 6l1 15h12l1-15M10 10v7M14 10v7" /></>,

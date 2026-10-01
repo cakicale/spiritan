@@ -8,7 +8,7 @@ import { Icon } from "./icon";
 import { formatPrice } from "@/lib/products";
 
 export function EmptyCart({ checkout = false }: { checkout?: boolean }) {
-  return <div className="basket-empty"><Icon name="cart" width={44} height={44} /><h2>Your next adventure is waiting.</h2><p>{checkout ? "Add a game to your cart before starting the demo checkout." : "Find a game you love and choose your platform."}</p><Link className="button button-primary" href="/#games">Explore games</Link></div>;
+  return <div className="basket-empty"><Icon name="cart" width={44} height={44} /><h2>Your next adventure is waiting.</h2><p>{checkout ? "Add a game to your cart before starting the demo checkout." : "Find a game you love and choose your platform."}</p><Link className="button button-primary" href="/games">Explore games</Link></div>;
 }
 
 export function CartView() {
@@ -16,7 +16,7 @@ export function CartView() {
   return (
     <main id="main" className="container basket-page">
       <CheckoutSteps active={1} />
-      <div className="basket-heading"><div><p className="eyebrow">YOUR NEXT ADVENTURES</p><h1>Your cart.</h1></div><Link className="text-link" href="/#games">Keep exploring</Link></div>
+      <div className="basket-heading"><div><p className="eyebrow">YOUR NEXT ADVENTURES</p><h1>Your cart.</h1></div><Link className="text-link" href="/games">Keep exploring</Link></div>
       {!ready ? <p className="basket-loading" role="status">Loading your cart…</p> : !items.length ? <EmptyCart /> : (
         <div className="basket-layout">
           <section className="basket-items" aria-label="Games in your cart">
