@@ -1,0 +1,21 @@
+import type { Metadata } from "next";
+import Image from "next/image";
+import Link from "next/link";
+import { Icon } from "@/components/icon";
+
+export const metadata: Metadata = { title: "Our story | Spiritan", description: "Meet Spiritan, an independent digital games store being built in Serbia for players across the Balkans." };
+
+export default function AboutPage() {
+  return (
+    <main id="main" className="about-page">
+      <section className="container story-hero" aria-labelledby="story-title">
+        <div className="story-hero-copy"><p className="eyebrow">MORE THAN ONE MORE LEVEL</p><h1 id="story-title">Some games<br />stay with you.<br /><span>That&apos;s our why.</span></h1><p>A world you remember. A challenge you finally beat. A story you wish you could experience for the first time again.</p><p>Spiritan is being built for those moments.</p><Link className="text-link" href="/games">Find your next adventure<Icon name="arrow-right" /></Link></div>
+        <div className="story-visual"><div className="story-art story-art-one"><Image src="/games/baldurs-gate-3.jpg" alt="Baldur's Gate 3 artwork" fill sizes="(max-width: 600px) 75vw, 430px" /></div><div className="story-art story-art-two"><Image src="/games/hollow-knight.jpg" alt="Hollow Knight artwork" fill sizes="(max-width: 600px) 75vw, 430px" /></div><div className="story-art story-art-three"><Image src="/games/hades.jpg" alt="Hades artwork" fill sizes="(max-width: 600px) 75vw, 430px" /></div><span className="story-visual-note">BIG WORLDS. SMALL DISCOVERIES.</span></div>
+      </section>
+      <section className="container story-origin" aria-labelledby="origin-title"><div><p className="eyebrow">OUR FIRST CHAPTER</p><h2 id="origin-title">A gamer&apos;s idea.<br />A developer&apos;s project.</h2><div className="founder-credit"><span>AP</span><div><strong>Aleksandar Popovic</strong><p>Founder & developer / Serbia</p></div></div></div><div className="story-prose"><p>Spiritan began with a simple idea: build a digital games store we&apos;d enjoy using ourselves. A place where discovering a game feels as good as starting it.</p><p>We&apos;re starting in Serbia, with the wider Balkans in mind. The ambition is to bring officially sourced digital products together with clear information and an easy path from discovery to play.</p><p>Today, this is a working demo of that idea. We&apos;re exploring distribution partnerships and shaping the experience before opening a real store.</p></div></section>
+      <section className="container story-values" aria-labelledby="values-title"><div className="section-heading"><div><p className="eyebrow">WHAT WE&apos;RE BUILDING TOWARDS</p><h2 id="values-title">The things that matter.</h2></div></div><div className="values-grid"><article><Icon name="controller" /><span className="value-number">01</span><h3>Players come first.</h3><p>Great discoveries, clear platform choices and an experience that gives you more time to enjoy the game.</p></article><article><Icon name="check" /><span className="value-number">02</span><h3>Official sourcing.</h3><p>Our goal is a catalogue supplied through authorised distribution partners, with product details you can understand.</p></article><article><Icon name="globe" /><span className="value-number">03</span><h3>Local roots.</h3><p>Built in Serbia, with a long-term ambition to serve players across the Balkans.</p></article></div></section>
+      <section className="container story-now" aria-labelledby="demo-title"><span className="demo-status"><span />WHERE WE ARE TODAY</span><div><h2 id="demo-title">The first look. The full experience.</h2><p>Explore games, choose a platform and try the demo checkout. The catalogue and prices are illustrative; no payments are taken or game keys delivered.</p></div><Link className="button button-secondary" href="/games">Explore the demo<Icon name="arrow-right" /></Link></section>
+      <section className="container page-cta"><div><p className="eyebrow">LET&apos;S BUILD THE NEXT CHAPTER</p><h2>Good games bring people together.</h2><p>Have an idea, a question or a possible partnership?</p></div><Link className="button button-primary" href="/contact">Let&apos;s talk<Icon name="arrow-right" /></Link></section>
+    </main>
+  );
+}
