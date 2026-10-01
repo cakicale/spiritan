@@ -6,7 +6,7 @@ import { GameCard } from "@/components/game-card";
 import { Icon } from "@/components/icon";
 import { AddToCart } from "@/components/add-to-cart";
 import { canAddToCart } from "@/lib/cart";
-import { formatPrice, getProduct, getProducts } from "@/lib/products";
+import { formatPrice, gameHeroImage, getProduct, getProducts } from "@/lib/products";
 import type { Platform } from "@/lib/platforms";
 
 type Props = { params: Promise<{ slug: string }> };
@@ -31,7 +31,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     openGraph: {
       title: `${game.title} | Spiritan`,
       description: game.description,
-      images: [{ url: game.image, alt: `${game.title} cover art` }],
+      images: [{ url: gameHeroImage(game.image), alt: `${game.title}` }],
     },
   };
 }
@@ -41,20 +41,23 @@ export default async function GamePage({ params }: Props) {
   if (!game) notFound();
   const products = await getProducts();
   const editions = products.filter((item) => item.gameId === game.gameId);
-  const related = products.filter((item) => item.platform === game.platform && item.id !== game.id).slice(0, 3);
+  const related = products
+    .filter((item) => item.platform === game.platform && item.gameId !== game.gameId)
+    .sort((first, second) => Number(second.genre === game.genre) - Number(first.genre === game.genre))
+    .slice(0, 3);
   const upcoming = game.status === "Coming soon";
 
   return (
     <main id="main" className="container product-page">
       <nav className="breadcrumbs" aria-label="Breadcrumb">
         <Link href="/">Home</Link><span aria-hidden="true">/</span>
-        <Link href="/#games">Games</Link><span aria-hidden="true">/</span>
+        <Link href="/games">Games</Link><span aria-hidden="true">/</span>
         <span aria-current="page">{game.title}</span>
       </nav>
       <div className="product-layout">
         <div className="product-content">
           <div className="product-media">
-            <Image src={game.image} alt={`${game.title} cover art`} fill sizes="(max-width: 800px) 100vw, (max-width: 1280px) 60vw, 760px" preload />
+            <Image src={gameHeroImage(game.image)} alt={`${game.title}`} fill sizes="(max-width: 800px) 100vw, (max-width: 1280px) 60vw, 760px" preload />
             <span className="product-image-label"><Icon name={game.platform === "PC" ? "monitor" : "controller"} />{platformNames[game.platform]}</span>
             {upcoming && <span className="game-status">Coming soon</span>}
           </div>
@@ -92,12 +95,12 @@ export default async function GamePage({ params }: Props) {
           {game.releaseDate && <p className="product-release"><span>Expected release</span><strong>{game.releaseDate}</strong></p>}
           <AddToCart productId={game.id} available={canAddToCart(game)} />
           <p className="product-preview-note">This is a demo listing. Try the cart and checkout with illustrative prices. No payment or game delivery takes place.</p>
-          <Link className="product-back-link" href="/#games">Keep exploring</Link>
+          <Link className="product-back-link" href={`/games?platform=${game.platform}`}>Keep exploring</Link>
         </aside>
       </div>
       {related.length > 0 && (
         <section className="related-games" aria-labelledby="related-title">
-          <div className="section-heading"><div><p className="eyebrow">KEEP THE ADVENTURE GOING</p><h2 id="related-title">More on {game.platform}.</h2></div><Link className="text-link" href="/#games">Explore the collection</Link></div>
+          <div className="section-heading"><div><p className="eyebrow">KEEP THE ADVENTURE GOING</p><h2 id="related-title">More on {game.platform}.</h2></div><Link className="text-link" href={`/games?platform=${game.platform}`}>Explore the collection</Link></div>
           <div className="game-grid">{related.map((item) => <GameCard key={item.id} game={item} editions={products.filter((edition) => edition.gameId === item.gameId)} activePlatform={game.platform} />)}</div>
         </section>
       )}

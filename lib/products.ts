@@ -7,3 +7,7 @@ export async function getProduct(slug: string): Promise<Game | undefined> {
 }
 
 export function formatPrice(price: number, currency: Game["currency"]) { return new Intl.NumberFormat("en-IE", { style: "currency", currency }).format(price); }
+
+export function gameHeroImage(image: string) {
+  return image.replace("/games/", "/games/heroes/");
+}
