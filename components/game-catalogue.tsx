@@ -3,7 +3,7 @@
 import { useSearchParams } from "next/navigation";
 import type { MouseEvent } from "react";
 import type { Game } from "@/lib/mock-games";
-import { catalogueHref, genres, getCatalogue, readCatalogueFilters, sortOptions } from "@/lib/catalogue";
+import { catalogueHref, genres, getCatalogue, readCatalogueFilters, sortOptions, type CatalogueFilters } from "@/lib/catalogue";
 import { platforms, type PlatformFilter } from "@/lib/platforms";
 import { CatalogueSelect } from "./catalogue-select";
 import { GameCard } from "./game-card";
