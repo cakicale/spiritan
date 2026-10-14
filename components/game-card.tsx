@@ -13,14 +13,24 @@ export function GameCard({ game, editions = [game], activePlatform }: Props) {
     return edition ? [edition] : [];
   });
   const pricedEditions = editions.filter((edition) => edition.price !== null);
-  const lowestPrice = Math.min(...pricedEditions.map((edition) => edition.price!));
-  const hasPriceRange = !activePlatform && pricedEditions.some((edition) => edition.price !== lowestPrice);
+  const lowestPrice = Math.min(
+    ...pricedEditions.map((edition) => edition.price!),
+  );
+  const hasPriceRange =
+    !activePlatform &&
+    pricedEditions.some((edition) => edition.price !== lowestPrice);
   const price = hasPriceRange ? lowestPrice : game.price;
 
   return (
     <article className="game-card">
       <div className="game-image">
-        <Image src={game.image} alt={`${game.title} cover art`} width={460} height={215} sizes="(max-width: 600px) 100vw, (max-width: 960px) 50vw, 33vw" />
+        <Image
+          src={game.image}
+          alt={`${game.title} cover art`}
+          width={460}
+          height={215}
+          sizes="(max-width: 600px) 100vw, (max-width: 960px) 50vw, 33vw"
+        />
         <div className="game-platforms" aria-label={`${game.title} platforms`}>
           {availableEditions.map((edition) => (
             <Link
@@ -29,7 +39,10 @@ export function GameCard({ game, editions = [game], activePlatform }: Props) {
               className={`game-platform${activePlatform === edition.platform ? " selected" : ""}`}
               aria-label={`View ${game.title} for ${edition.platform}`}
             >
-              <Icon name={edition.platform === "PC" ? "monitor" : "controller"} />{edition.platform}
+              <Icon
+                name={edition.platform === "PC" ? "monitor" : "controller"}
+              />
+              {edition.platform}
             </Link>
           ))}
         </div>
@@ -38,10 +51,26 @@ export function GameCard({ game, editions = [game], activePlatform }: Props) {
       </div>
       <div className="game-info">
         <span className="game-genre">{game.genre}</span>
-        <h3><Link className="game-title-link" href={`/games/${game.slug}`} aria-label={`View ${game.title}`}>{game.title}</Link></h3>
+        <h3>
+          <Link
+            className="game-title-link"
+            href={`/games/${game.slug}`}
+            aria-label={`View ${game.title}`}
+          >
+            {game.title}
+          </Link>
+        </h3>
         <div className="game-price">
-          <span>{price === null ? "Coming soon" : hasPriceRange ? "Demo price from" : "Demo price"}</span>
-          <strong>{price === null ? "Price TBA" : formatPrice(price, game.currency)}</strong>
+          <span>
+            {price === null
+              ? "Coming soon"
+              : hasPriceRange
+                ? "Demo price from"
+                : "Demo price"}
+          </span>
+          <strong>
+            {price === null ? "Price TBA" : formatPrice(price, game.currency)}
+          </strong>
         </div>
       </div>
     </article>

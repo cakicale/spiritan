@@ -5,6 +5,7 @@ import { SiteHeader } from "@/components/site-header";
 import { SiteFooter } from "@/components/site-footer";
 import { CartProvider } from "@/components/cart-provider";
 import { getProducts } from "@/lib/products";
+import { Analytics } from "@vercel/analytics/next";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -16,10 +17,13 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
-const siteOrigin = process.env.VERCEL_PROJECT_PRODUCTION_URL ?? process.env.VERCEL_URL;
+const siteOrigin =
+  process.env.VERCEL_PROJECT_PRODUCTION_URL ?? process.env.VERCEL_URL;
 
 export const metadata: Metadata = {
-  metadataBase: new URL(siteOrigin ? `https://${siteOrigin}` : "http://localhost:3000"),
+  metadataBase: new URL(
+    siteOrigin ? `https://${siteOrigin}` : "http://localhost:3000",
+  ),
   robots: { index: false, follow: false },
   title: "Spiritan | Your next adventure starts here",
   description:
@@ -34,12 +38,18 @@ export default async function RootLayout({ children }: LayoutProps<"/">) {
       className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col">
-        <a className="skip-link" href="#main">Skip to content</a>
-        <div className="preview-bar"><span className="preview-label">PRE-LAUNCH</span>A first look at Spiritan. Demo catalogue, no purchases yet.</div>
+        <a className="skip-link" href="#main">
+          Skip to content
+        </a>
+        <div className="preview-bar">
+          <span className="preview-label">PRE-LAUNCH</span>A first look at
+          Spiritan. Demo catalogue, no purchases yet.
+        </div>
         <CartProvider products={products}>
-        <SiteHeader />
-        {children}
-        <SiteFooter />
+          <SiteHeader />
+          {children}
+          <Analytics />
+          <SiteFooter />
         </CartProvider>
       </body>
     </html>

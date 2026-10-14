@@ -11,13 +11,13 @@ Sequential `if` w/ early return. One condition, one exit.
 ```js
 function getStatus(user) {
   if (!user) {
-    return 'anonymous';
+    return "anonymous";
   } else if (!user.active) {
-    return 'inactive';
+    return "inactive";
   } else if (user.banned) {
-    return 'banned';
+    return "banned";
   } else {
-    return 'active';
+    return "active";
   }
 }
 ```
@@ -26,10 +26,10 @@ function getStatus(user) {
 
 ```js
 function getStatus(user) {
-  if (!user) return 'anonymous';
-  if (!user.active) return 'inactive';
-  if (user.banned) return 'banned';
-  return 'active';
+  if (!user) return "anonymous";
+  if (!user.active) return "inactive";
+  if (user.banned) return "banned";
+  return "active";
 }
 ```
 
@@ -62,16 +62,16 @@ function process(data) {
 **Bad: nested ternary**
 
 ```js
-const result = !value ? 'empty' : value > 10 ? 'large' : 'small';
+const result = !value ? "empty" : value > 10 ? "large" : "small";
 ```
 
 **Good: extract fn**
 
 ```js
 function getSizeLabel(value) {
-  if (!value) return 'empty';
-  if (value > 10) return 'large';
-  return 'small';
+  if (!value) return "empty";
+  if (value > 10) return "large";
+  return "small";
 }
 const result = getSizeLabel(value);
 ```
@@ -81,8 +81,8 @@ const result = getSizeLabel(value);
 Trivial conditional value = fine.
 
 ```js
-const color = isActive ? 'bg-green-500' : 'bg-gray-300';
-const label = count === 1 ? 'item' : 'items';
+const color = isActive ? "bg-green-500" : "bg-gray-300";
+const label = count === 1 ? "item" : "items";
 ```
 
 **Bad: `let` w/ nested logic**
@@ -90,11 +90,11 @@ const label = count === 1 ? 'item' : 'items';
 ```js
 let status;
 if (!user) {
-  status = 'anonymous';
+  status = "anonymous";
 } else if (!user.active) {
-  status = 'inactive';
+  status = "inactive";
 } else {
-  status = 'active';
+  status = "active";
 }
 ```
 
@@ -102,9 +102,9 @@ if (!user) {
 
 ```js
 function getStatus(user) {
-  if (!user) return 'anonymous';
-  if (!user.active) return 'inactive';
-  return 'active';
+  if (!user) return "anonymous";
+  if (!user.active) return "inactive";
+  return "active";
 }
 const status = getStatus(user);
 ```
@@ -113,11 +113,11 @@ const status = getStatus(user);
 
 ```js
 const statusMap = {
-  pending: 'yellow',
-  success: 'green',
-  error: 'red',
+  pending: "yellow",
+  success: "green",
+  error: "red",
 };
-const color = statusMap[status] || 'gray';
+const color = statusMap[status] || "gray";
 ```
 
 **Bad: mixed null-guard styles**
@@ -139,7 +139,7 @@ if (availableFrom != null && availableFrom !== '') { ... }
 **Bad: positional args (3+)**
 
 ```ts
-fetchRooms(4, 1, 10, '2026-01-01', '2026-12-31');
+fetchRooms(4, 1, 10, "2026-01-01", "2026-12-31");
 ```
 
 **Good: options object, destructured**
@@ -158,16 +158,16 @@ const parts: string[] = [];
 if (page) parts.push(`page=${page}`);
 if (limit) parts.push(`limit=${limit}`);
 if (sort) parts.push(`sort=${sort}`);
-if (parts.length) url += '?' + parts.join('&');
+if (parts.length) url += "?" + parts.join("&");
 ```
 
 **Good: declarative builder**
 
 ```ts
 const params = new URLSearchParams();
-if (page != null) params.set('page', String(page));
-if (limit != null) params.set('limit', String(limit));
-if (sort != null) params.set('sort', sort);
+if (page != null) params.set("page", String(page));
+if (limit != null) params.set("limit", String(limit));
+if (sort != null) params.set("sort", sort);
 const query = params.toString();
 const url = query ? `${base}?${query}` : base;
 ```
