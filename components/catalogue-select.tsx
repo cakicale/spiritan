@@ -1,18 +1,34 @@
 "use client";
 
-import { useEffect, useId, useRef, useState, type KeyboardEvent, type PointerEvent as ReactPointerEvent } from "react";
+import {
+  useEffect,
+  useId,
+  useRef,
+  useState,
+  type KeyboardEvent,
+  type PointerEvent as ReactPointerEvent,
+} from "react";
 import { Icon } from "./icon";
 
 type SelectOption<T extends string> = { value: T; label: string };
 
-function optionAt<T extends string>(options: readonly SelectOption<T>[], current: T, offset: number) {
+function optionAt<T extends string>(
+  options: readonly SelectOption<T>[],
+  current: T,
+  offset: number,
+) {
   const index = options.findIndex((option) => option.value === current);
   const start = index < 0 ? 0 : index;
   const nextIndex = Math.min(options.length - 1, Math.max(0, start + offset));
   return options[nextIndex];
 }
 
-export function CatalogueSelect<T extends string>({ label, value, options, onChange }: {
+export function CatalogueSelect<T extends string>({
+  label,
+  value,
+  options,
+  onChange,
+}: {
   label: string;
   value: T;
   options: readonly SelectOption<T>[];
@@ -25,7 +41,10 @@ export function CatalogueSelect<T extends string>({ label, value, options, onCha
   const listId = useId();
   const labelId = useId();
   const valueId = useId();
-  const activeIndex = Math.max(0, options.findIndex((option) => option.value === activeValue));
+  const activeIndex = Math.max(
+    0,
+    options.findIndex((option) => option.value === activeValue),
+  );
   const selected = options.find((option) => option.value === value);
 
   function setActive(next: T) {
@@ -59,7 +78,9 @@ export function CatalogueSelect<T extends string>({ label, value, options, onCha
 
   useEffect(() => {
     if (!open) return;
-    document.getElementById(`${listId}-option-${activeIndex}`)?.scrollIntoView({ block: "nearest" });
+    document
+      .getElementById(`${listId}-option-${activeIndex}`)
+      ?.scrollIntoView({ block: "nearest" });
   }, [activeIndex, listId, open]);
 
   function onTriggerKeyDown(event: KeyboardEvent<HTMLButtonElement>) {
@@ -99,7 +120,9 @@ export function CatalogueSelect<T extends string>({ label, value, options, onCha
   }
 
   function onOptionPointerEnter(event: ReactPointerEvent<HTMLLIElement>) {
-    const next = options.find((option) => option.value === event.currentTarget.dataset.value);
+    const next = options.find(
+      (option) => option.value === event.currentTarget.dataset.value,
+    );
     if (!next) return;
     setActive(next.value);
   }
@@ -120,7 +143,9 @@ export function CatalogueSelect<T extends string>({ label, value, options, onCha
         aria-haspopup="listbox"
         aria-expanded={open}
         aria-controls={open ? listId : undefined}
-        aria-activedescendant={open ? `${listId}-option-${activeIndex}` : undefined}
+        aria-activedescendant={
+          open ? `${listId}-option-${activeIndex}` : undefined
+        }
         aria-labelledby={`${labelId} ${valueId}`}
         onClick={toggle}
         onKeyDown={onTriggerKeyDown}

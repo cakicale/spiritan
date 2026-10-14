@@ -12,7 +12,12 @@ export type DemoOrder = {
 };
 
 export function canAddToCart(game: Game): game is CartGame {
-  return game.status !== "Coming soon" && game.price !== null && Number.isFinite(game.price) && game.price >= 0;
+  return (
+    game.status !== "Coming soon" &&
+    game.price !== null &&
+    Number.isFinite(game.price) &&
+    game.price >= 0
+  );
 }
 
 // Only product IDs are saved in the cart. Pricing comes from the catalogue.
@@ -45,12 +50,20 @@ function readStoredIds(order: Record<string, unknown>) {
 }
 
 function stringsOnly(values: unknown[]) {
-  const ids = values.filter((id): id is string => typeof id === "string" && id.length > 0);
+  const ids = values.filter(
+    (id): id is string => typeof id === "string" && id.length > 0,
+  );
   if (ids.length !== values.length || ids.length === 0) return null;
   return ids;
 }
 
-function resolveOrderItems({ ids, products }: { ids: string[]; products: Game[] }) {
+function resolveOrderItems({
+  ids,
+  products,
+}: {
+  ids: string[];
+  products: Game[];
+}) {
   const uniqueIds = [...new Set(ids)];
   const items = uniqueIds.flatMap((id) => {
     const game = products.find((item) => item.id === id);
@@ -61,19 +74,41 @@ function resolveOrderItems({ ids, products }: { ids: string[]; products: Game[] 
 }
 
 // Receipt titles and prices come from the catalogue, not from stored JSON.
-export function parseDemoOrder({ snapshot, products }: { snapshot: string; products: Game[] }): DemoOrder | null {
+export function parseDemoOrder({
+  snapshot,
+  products,
+}: {
+  snapshot: string;
+  products: Game[];
+}): DemoOrder | null {
   try {
     const order: unknown = JSON.parse(snapshot);
     if (!order || typeof order !== "object") return null;
     const record = order as Record<string, unknown>;
-    if (typeof record.id !== "string" || !record.id.startsWith("DEMO-")) return null;
-    if (typeof record.email !== "string" || record.email.length === 0 || record.email.length > 254) return null;
-    if (typeof record.createdAt !== "string" || !Number.isFinite(Date.parse(record.createdAt))) return null;
+    if (typeof record.id !== "string" || !record.id.startsWith("DEMO-"))
+      return null;
+    if (
+      typeof record.email !== "string" ||
+      record.email.length === 0 ||
+      record.email.length > 254
+    )
+      return null;
+    if (
+      typeof record.createdAt !== "string" ||
+      !Number.isFinite(Date.parse(record.createdAt))
+    )
+      return null;
     const ids = readStoredIds(record);
     if (!ids) return null;
     const items = resolveOrderItems({ ids, products });
     if (!items) return null;
-    return { id: record.id, email: record.email, createdAt: record.createdAt, items, totalCents: cartTotalCents(items) };
+    return {
+      id: record.id,
+      email: record.email,
+      createdAt: record.createdAt,
+      items,
+      totalCents: cartTotalCents(items),
+    };
   } catch {
     return null;
   }
